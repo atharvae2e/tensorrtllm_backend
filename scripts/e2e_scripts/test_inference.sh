@@ -21,8 +21,6 @@ echo "INFLIGHT_BATCHER_MODELS_DIR: $INFLIGHT_BATCHER_MODELS_DIR"
 
 
 
-echo "Test Prompt: Explain in Detail, What is GPU ?" 
-
 python3 ${MODEL_SCRIPTS_DIR}/../run.py --engine_dir ${ENGINE_DIR} \
                   --max_output_len 200 \
                   --vocab_file ${VOCAB_FILE_PATH} \
