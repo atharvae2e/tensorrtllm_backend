@@ -43,6 +43,12 @@ FROM dev as trt_llm_builder
 
 WORKDIR /app
 COPY scripts scripts
+COPY tools tools
+COPY all_models/gemma inflight_batcher_llm_models
+
+RUN find . -type f -name "*.py" -exec chmod +x {} \;
+RUN find . -type f -name "*.sh" -exec chmod +x {} \;
+
 COPY tensorrt_llm tensorrt_llm
 RUN cd tensorrt_llm && python3 scripts/build_wheel.py --trt_root="${TRT_ROOT}" -i -c && cd ..
 
