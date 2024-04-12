@@ -1,7 +1,10 @@
 #!/usr/bin/bash 
 set -e
 
-# Check if the environment variable is set
+tir_logger() {
+    echo "[$(date +'%m/%d/%Y-%H:%M:%S')] [TIR Builder] $1"
+}
+
 if [[ -z "$MODEL_PATH" ]]; then
 
     echo "Error: MODEL_PATH is not set. " >&2 

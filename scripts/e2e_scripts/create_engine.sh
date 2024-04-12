@@ -2,9 +2,10 @@
 set -e
 source /app/scripts/e2e_scripts/variables.sh
 
-echo "Installing Engine Creation Dependencies" 
+tir_logger "Installing Engine Creation Dependencies" 
 pip3 install -r ${MODEL_SCRIPTS_DIR}/requirements.txt 
-echo -e "\nConverting Checkpoint to unified TensorRT-LLM checkpoint" 
+tir_logger "Converting Checkpoint to unified TensorRT-LLM checkpoint" 
+
 python3 ${MODEL_SCRIPTS_DIR}/convert_checkpoint.py \
     --ckpt-type ${FRAMEWORK} \
     --model-dir ${CHECKPOINT_DIR} \
@@ -12,17 +13,17 @@ python3 ${MODEL_SCRIPTS_DIR}/convert_checkpoint.py \
     --world-size ${WORLD_SIZE} \
     --output-model-dir ${UNIFIED_CHECKPOINT_DIR} 
 
-echo "Unified TensorRT-LLM Checkpoint Created" 
+tir_logger "Unified TensorRT-LLM Checkpoint Created" 
 
-echo -e "\nCopy Tokenizer.model to TOKENIZER_DIR" 
+tir_logger "Copy Tokenizer.model to TOKENIZER_DIR" 
 cp ${CHECKPOINT_DIR}/tokenizer.model ${TOKENIZER_DIR} 
-echo "Copied! Tokenizer.model to TOKENIZER_DIR" 
+tir_logger "Copied! Tokenizer.model to TOKENIZER_DIR" 
 
-echo -e "\nModel Checkpoint Deletion Started" 
+tir_logger "Model Checkpoint Deletion Started" 
 rm -rf ${CHECKPOINT_DIR} 
-echo "Model Checkpoint Deletion Completed" 
+tir_logger "Model Checkpoint Deletion Completed" 
 
-echo -e "\nEngine Creation started using unified TensorRT-LLM checkpoint" 
+tir_logger "Engine Creation started using unified TensorRT-LLM checkpoint" 
 
 trtllm-build --checkpoint_dir ${UNIFIED_CHECKPOINT_DIR} \
              --gemm_plugin ${ACTIVATION_DTYPE} \
@@ -32,10 +33,10 @@ trtllm-build --checkpoint_dir ${UNIFIED_CHECKPOINT_DIR} \
              --max_output_len ${MAX_OUTPUT_LEN} \
              --output_dir ${ENGINE_DIR} 
 
-echo "Engine Created" 
+tir_logger "Engine Created" 
 
-echo -e "\nUnified Checkpoint Deletion Started" 
+tir_logger "Unified Checkpoint Deletion Started" 
 rm -rf ${UNIFIED_CHECKPOINT_DIR} 
-echo "Unified Checkpoint Deletion Completed"
+tir_logger "Unified Checkpoint Deletion Completed"
 
 
