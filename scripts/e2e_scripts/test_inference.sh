@@ -26,7 +26,8 @@ python3 ${MODEL_SCRIPTS_DIR}/../summarize.py --test_trt_llm \
                         --max_ite 5 \
                         --vocab_file ${VOCAB_FILE_PATH}
 
-tir_logger "TEST 2: Testing normal inference request "
+tir_logger "TEST 2: Inference request request with default parameters"
 python3 ${MODEL_SCRIPTS_DIR}/../run.py --engine_dir ${ENGINE_DIR} \
                   --max_output_len 200 \
                   --vocab_file ${VOCAB_FILE_PATH} 
+                  --input_text "Explain in Detail, What is GPU ?"
